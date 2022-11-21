@@ -1,5 +1,6 @@
 let mines;
 
+//Funcio per crear la Taula
 function creaTaula() {
     let body = document.getElementsByTagName("body")[0];
     let div = document.createElement("div");
@@ -19,13 +20,17 @@ function creaTaula() {
         document.getElementsByTagName("table")[0].remove();
     }
 
-    for (let j = 0; j < document.getElementById("midaX").value; j++) {
+    for (let j = 0; j < document.getElementById("midaY").value; j++) {
         // Craecio row's de la taula
         let row = document.createElement("tr");
 
-        for (let i = 0; i < document.getElementById("midaY").value; i++) {
+        for (let i = 0; i < document.getElementById("midaX").value; i++) {
             // Creacio cel·les de la taula
             let td = document.createElement("td");
+
+            //Fem que al clicar, ens indiqui la posicio de la cel·la
+            td.onclick = celaclicada.bind(td,j,i);
+
             td.innerHTML = "&nbsp";
             td.style.border = "2px solid black";
             td.style.margin = "1px";
@@ -57,20 +62,19 @@ function matriuBinaria(matrix) {
     return matrix2;
 }
 
-function inicialitzaMines(nMines, midaX , midaY) {
-
+function inicialitzaMines(nMines, midaY , midaX) {
     let matriu = [];
     let numMines = nMines;
-    for (let n = 0; n < midaX; n++) {
+    for (let n = 0; n < midaY; n++) {
         let fila = [];
-        for (let m = 0; m < midaY; m++) {
+        for (let m = 0; m < midaX; m++) {
             fila.push(0)
         }
         matriu.push(fila);
     }
     while (numMines != 0) {
-        let n = Math.trunc(Math.random() * (midaX));
-        let m = Math.trunc(Math.random() * (midaY));
+        let n = Math.trunc(Math.random() * (midaY));
+        let m = Math.trunc(Math.random() * (midaX));
         if (matriu[n][m] != 1) {
             matriu[n][m] = 1;
             numMines--;
@@ -79,27 +83,37 @@ function inicialitzaMines(nMines, midaX , midaY) {
     return matriu;
 }
 
-
+//Funcio per a pintar x mines (Random)
 function pintamines(mines) {
     let taula = document.getElementsByTagName("tbody")[0];
     for (let n = 0; n < mines.length; n++) {
         for (let m = 0; m < mines[0].length; m++) {
             if (mines[n][m] == 1) {
-                taula.children[n].children[m].style.backgroundColor = "#F3DDF2";
+                taula.children[n].children[m].style.backgroundColor = "red";
 
             }
         }
     }
 }
 
+//Funcio per a saber la cel·la clicada
+function celaclicada(x,y) {
+    console.log(x,y);
+    if(mines[x][y] == 1) {
+        console.log("ES UNA MINA")
+    } else {
+        console.log("NO ES UNA MINA")
+    }
+}
 
+//Funcio utilitzada al boto per cridar totes les funcions
 function inicialitzaJoc() {
     creaTaula();
 
     let nMines = document.getElementById("nMines").valueAsNumber;
-    let midaX = document.getElementById("midaX").valueAsNumber;
     let midaY = document.getElementById("midaY").valueAsNumber;
-    mines = inicialitzaMines(nMines, midaX, midaY);
+    let midaX = document.getElementById("midaX").valueAsNumber;
+    mines = inicialitzaMines(nMines, midaY, midaX);
 
     pintamines(mines);
 }
