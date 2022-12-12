@@ -1,8 +1,11 @@
+let body = document.getElementsByTagName("body")[0];
+body.style.backgroundColor = "lightgrey";
+
 let mines;
+let minesVoltant = [];
 
 //Funcio per crear la Taula
 function creaTaula() {
-    let body = document.getElementsByTagName("body")[0];
     let div = document.createElement("div");
 
     //Elements taula
@@ -34,6 +37,7 @@ function creaTaula() {
             td.innerHTML = "&nbsp";
             td.style.border = "2px solid black";
             td.style.margin = "1px";
+            td.style.backgroundColor = "white";
             row.appendChild(td);
         }
         TaulaBody.appendChild(row);
@@ -104,6 +108,45 @@ function celaclicada(x,y) {
     } else {
         console.log("NO ES UNA MINA")
     }
+}
+
+function comptaveins(x,y) {
+ 
+    let count = 0;
+    for (let i = y-1; i<= y+1; i++ ) {
+        for (let j = x-1; j<= x+1; j++) {
+            try {
+                if(i==x && j==y){
+                    //count++;
+                }
+            else if (matrix[i][j].style.backgroundColor == "red") {
+                count++;
+            }
+            } catch {
+
+            }
+        }
+    }     
+     return count; 
+}
+
+function countNeighbours(x,y) {
+    let count = 0;
+    for (let i = y-1; i<= y+1; i++ ) {
+        for (let j = x-1; j<= x+1; j++) {
+            try {
+                if(i==x && j==y){
+                    //count++;
+                }
+            else if (mines[i][j].style.backgroundColor == "red") {
+                count++;
+            }
+            } catch {
+
+            }
+        }
+    } 
+     return count; 
 }
 
 //Funcio utilitzada al boto per cridar totes les funcions
